@@ -1,5 +1,6 @@
 streamlit==1.50.0
 google-api-python-client
+google-auth-oauthlib
 google-genai
 pytube
 pandas
