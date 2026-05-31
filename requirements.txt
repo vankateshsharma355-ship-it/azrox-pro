@@ -1,5 +1,6 @@
 streamlit==1.50.0
-pytube
+google-api-python-client
 google-genai
+pytube
 pandas
 requests
