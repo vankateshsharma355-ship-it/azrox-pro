@@ -1,9 +1,9 @@
 import streamlit as st
 from google_auth_oauthlib.flow import InstalledAppFlow
+# --- Yahan apne baki imports daalein (jaise: from langchain import..., import openai, etc.) ---
 
-# 1. Secrets se config load karein
-# Streamlit secrets already ek dict-like object hai, 
-# isliye json.loads ki zaroorat nahi hai.
+# 1. AUTH CONFIGURATION (Ise bilkul top par rakhein)
+# Streamlit secrets se settings load kar rahe hain
 client_secrets_dict = {
     "web": {
         "client_id": st.secrets.client_secrets.client_id,
@@ -16,16 +16,19 @@ client_secrets_dict = {
     }
 }
 
-# 2. Scopes define karein
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 
-# 3. Auth Flow setup karein
-flow = InstalledAppFlow.from_client_config(
-    client_secrets_dict, 
-    scopes=scopes
-)
+# Auth Flow Initialize
+flow = InstalledAppFlow.from_client_config(client_secrets_dict, scopes=scopes)
 
+# 2. YAHAN APNA PURANA AI AGENT/TOOLS KA CODE DALEIN
+# Aapke jo bhi functions the (e.g., analyze_video, process_data, etc.)
+# Unhe yahan niche paste karein:
+# def analyze_video(url):
+#     ... aapka AI logic ...
+
+# 3. STREAMLIT UI (Jo UI aapne pehle banaya tha)
 st.title("Azrox Gaming YT Tool")
-st.write("Authentication configuration successfully loaded!")
 
-# Yahan apna YouTube API ka logic continue karein...
+# ... apna UI ka code yahan likhein (st.text_input, st.button, etc.) ...
+# Jab user button click kare, tab aap apne agent logic ko call karna
