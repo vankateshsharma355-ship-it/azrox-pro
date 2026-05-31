@@ -1,9 +1,9 @@
 import streamlit as st
+import json
 from google_auth_oauthlib.flow import InstalledAppFlow
-# --- Yahan apne baki imports daalein (jaise: from langchain import..., import openai, etc.) ---
+from googleapiclient.discovery import build
 
-# 1. AUTH CONFIGURATION (Ise bilkul top par rakhein)
-# Streamlit secrets se settings load kar rahe hain
+# 1. AUTH CONFIGURATION (Jo humne fix ki thi)
 client_secrets_dict = {
     "web": {
         "client_id": st.secrets.client_secrets.client_id,
@@ -15,20 +15,26 @@ client_secrets_dict = {
         "redirect_uris": st.secrets.client_secrets.redirect_uris
     }
 }
-
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 
-# Auth Flow Initialize
-flow = InstalledAppFlow.from_client_config(client_secrets_dict, scopes=scopes)
+# 2. AI AGENT TOOLS & FUNCTIONS
+def analyze_youtube_video(video_id):
+    # --- Yahan apna purana AI analysis wala logic daalein ---
+    return f"Analyzing video: {video_id} using AI Agents..."
 
-# 2. YAHAN APNA PURANA AI AGENT/TOOLS KA CODE DALEIN
-# Aapke jo bhi functions the (e.g., analyze_video, process_data, etc.)
-# Unhe yahan niche paste karein:
-# def analyze_video(url):
-#     ... aapka AI logic ...
-
-# 3. STREAMLIT UI (Jo UI aapne pehle banaya tha)
+# 3. STREAMLIT UI & YOUTUBE CONNECT LOGIC
 st.title("Azrox Gaming YT Tool")
 
-# ... apna UI ka code yahan likhein (st.text_input, st.button, etc.) ...
-# Jab user button click kare, tab aap apne agent logic ko call karna
+# Yahan wo logic hai jo YouTube Channel Connect karta hai
+if st.button("Connect YouTube Channel"):
+    flow = InstalledAppFlow.from_client_config(client_secrets_dict, scopes=scopes)
+    # Streamlit Cloud par 'run_local_server' nahi chalta, 
+    # yahan aapko authorization URL generate karke user ko dena hoga
+    auth_url, _ = flow.authorization_url(prompt='consent')
+    st.write(f"Please [click here to authorize]({auth_url})")
+
+# Yahan user se Input lene ka aur AI tools chalane ka logic
+video_id = st.text_input("Enter YouTube Video ID:")
+if st.button("Analyze Video"):
+    result = analyze_youtube_video(video_id)
+    st.write(result)
