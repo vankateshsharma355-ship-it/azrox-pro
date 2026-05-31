@@ -1,40 +1,46 @@
 import streamlit as st
-import json
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
 
-# 1. AUTH CONFIGURATION (Jo humne fix ki thi)
+# --- 1. CONFIGURATION ---
+REDIRECT_URI = "https://azrox-pro.streamlit.app/"
+
 client_secrets_dict = {
     "web": {
         "client_id": st.secrets.client_secrets.client_id,
         "client_secret": st.secrets.client_secrets.client_secret,
         "project_id": st.secrets.client_secrets.project_id,
-        "auth_uri": st.secrets.client_secrets.auth_uri,
-        "token_uri": st.secrets.client_secrets.token_uri,
-        "auth_provider_x509_cert_url": st.secrets.client_secrets.auth_provider_x509_cert_url,
-        "redirect_uris": st.secrets.client_secrets.redirect_uris
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "redirect_uris": [REDIRECT_URI]
     }
 }
+
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 
-# 2. AI AGENT TOOLS & FUNCTIONS
-def analyze_youtube_video(video_id):
-    # --- Yahan apna purana AI analysis wala logic daalein ---
-    return f"Analyzing video: {video_id} using AI Agents..."
-
-# 3. STREAMLIT UI & YOUTUBE CONNECT LOGIC
+# --- 2. AUTHENTICATION LOGIC ---
 st.title("Azrox Gaming YT Tool")
 
-# Yahan wo logic hai jo YouTube Channel Connect karta hai
-if st.button("Connect YouTube Channel"):
-    flow = InstalledAppFlow.from_client_config(client_secrets_dict, scopes=scopes)
-    # Streamlit Cloud par 'run_local_server' nahi chalta, 
-    # yahan aapko authorization URL generate karke user ko dena hoga
-    auth_url, _ = flow.authorization_url(prompt='consent')
-    st.write(f"Please [click here to authorize]({auth_url})")
+# Flow initialization
+flow = InstalledAppFlow.from_client_config(
+    client_secrets_dict, 
+    scopes=scopes,
+    redirect_uri=REDIRECT_URI
+)
 
-# Yahan user se Input lene ka aur AI tools chalane ka logic
-video_id = st.text_input("Enter YouTube Video ID:")
-if st.button("Analyze Video"):
-    result = analyze_youtube_video(video_id)
-    st.write(result)
+# Connect Button
+if st.button("Connect YouTube Channel"):
+    auth_url, _ = flow.authorization_url(prompt='consent', access_type='offline')
+    st.write(f"Click here to authorize: {auth_url}")
+    # Link par click karne ke baad aapko ek code milega, 
+    # wo code yahan niche input box mein daalne ka logic aapko add karna hoga.
+
+# --- 3. AI AGENT TOOLS & ANALYSIS ---
+# Yahan apna purana code (LangChain, OpenAI tools) niche paste karein:
+def analyze_video(video_id):
+    # Aapka AI Agent logic yahan rahega
+    return "Analysis Result"
+
+video_input = st.text_input("Enter Video ID:")
+if st.button("Analyze"):
+    st.write(analyze_video(video_input))
