@@ -6,7 +6,7 @@ from datetime import datetime
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
-import google.generativeai as genai
+from google import generativeai as genai
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
